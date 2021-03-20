@@ -7,29 +7,21 @@ import {User} from '../../models/user.models';
   selector: 'app-channel',
   template: `
 <div class="section-form-add-user">
-  <h1>Ajouter un utilisateur au groupe</h1>
+  <h1>Ajouter un utilisateur</h1>
   <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <input matInput placeholder="speudonyme" formControlName="speudonyme" required>
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        name="icon-speudonyme"
-        tabindex="-1">
-        <mat-icon color="accent">email</mat-icon>
-      </button>
-      <mat-error *ngIf="addUserForm.controls.speudonyme?.errors?.required">Veuillez saisir un speudonyme</mat-error>
+    <mat-form-field color="accent">
+      <input matInput placeholder="Pseudonyme" formControlName="pseudonyme" required>
     </mat-form-field>
     <button
       mat-raised-button
       color="accent"
+      [disabled]="this.addUserForm.invalid"
       type="submit">
       Ajouter
     </button>
   </form>
 </div>
-<div class="section">
+<div class="section-user">
   <ng-container *ngFor="let user of users">
     <app-chat [user]="user"></app-chat>
   </ng-container>
@@ -46,7 +38,7 @@ export class ChannelComponent implements OnInit {
 
   ngOnInit(): void {
     this.addUserForm = this.formBuilder.group({
-      speudonyme: ['', [Validators.required]],
+      pseudonyme: ['', [ Validators.required ]],
     });
   }
 
@@ -54,6 +46,6 @@ export class ChannelComponent implements OnInit {
     if (this.addUserForm.invalid) {
       return;
     }
-    this.users.push(new User({pseudonyme: this.addUserForm.value.speudonyme}));
+    this.users.push(new User({pseudonyme: this.addUserForm.value.pseudonyme}));
   }
 }
